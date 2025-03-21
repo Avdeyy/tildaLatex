@@ -1,0 +1,23 @@
+name: LaTeX Compiler Server
+
+on:  
+  push:
+    branches:
+      - main  
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout репозитория
+        uses: actions/checkout@v3
+
+      - name: Установка TeXLive
+        run: sudo apt update && sudo apt install -y texlive-full
+
+      - name: Установка зависимостей
+        run: pip install -r requirements.txt
+
+      - name: Запуск FastAPI-сервера
+        run: uvicorn main:app --host 0.0.0.0 --port 8000 &
